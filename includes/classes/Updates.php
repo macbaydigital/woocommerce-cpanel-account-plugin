@@ -24,7 +24,7 @@ class Updates
      *
      * @var string
      */
-    const GITHUB_ACCESS_TOKEN = 'YOUR_PERSONAL_ACCESS_TOKEN_HERE';
+    const GITHUB_ACCESS_TOKEN = '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';
 
     /**
      * Plugin slug

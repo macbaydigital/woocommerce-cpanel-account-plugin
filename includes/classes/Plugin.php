@@ -21,6 +21,9 @@ class Plugin
         $this->init_hooks();
         $this->register_settings();
         Admin_Notices::display_notices();
+        Assets::init();
+        Shortcodes::init();
+        Webhooks::init();
     }
 
     /**
@@ -32,6 +35,11 @@ class Plugin
         require_once WOOCOMMERCE_CPANEL_ACCOUNT_PLUGIN_DIR . 'includes/classes/Frontend.php';
         require_once WOOCOMMERCE_CPANEL_ACCOUNT_PLUGIN_DIR . 'includes/classes/Admin_Notices.php';
         require_once WOOCOMMERCE_CPANEL_ACCOUNT_PLUGIN_DIR . 'includes/classes/Admin_Settings.php';
+        require_once WOOCOMMERCE_CPANEL_ACCOUNT_PLUGIN_DIR . 'includes/classes/Settings.php';
+        require_once WOOCOMMERCE_CPANEL_ACCOUNT_PLUGIN_DIR . 'includes/classes/Helper.php';
+        require_once WOOCOMMERCE_CPANEL_ACCOUNT_PLUGIN_DIR . 'includes/classes/Assets.php';
+        require_once WOOCOMMERCE_CPANEL_ACCOUNT_PLUGIN_DIR . 'includes/classes/Shortcodes.php';
+        require_once WOOCOMMERCE_CPANEL_ACCOUNT_PLUGIN_DIR . 'includes/classes/Webhooks.php';
     }
 
     /**

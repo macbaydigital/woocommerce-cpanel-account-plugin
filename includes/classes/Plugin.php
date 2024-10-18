@@ -19,6 +19,7 @@ class Plugin
     {
         $this->includes();
         $this->init_hooks();
+        Admin_Notices::display_notices();
     }
 
     /**
@@ -28,6 +29,7 @@ class Plugin
     {
         require_once WOOCOMMERCE_CPANEL_ACCOUNT_PLUGIN_DIR . 'includes/classes/Admin.php';
         require_once WOOCOMMERCE_CPANEL_ACCOUNT_PLUGIN_DIR . 'includes/classes/Frontend.php';
+        require_once WOOCOMMERCE_CPANEL_ACCOUNT_PLUGIN_DIR . 'includes/classes/Admin_Notices.php';
     }
 
     /**

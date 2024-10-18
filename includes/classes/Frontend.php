@@ -132,11 +132,12 @@ class Frontend
         $email = $order->get_billing_email();
         $user_name = strtolower($user_name);
 
-        $api_url = "https://cube.macbay.net:2087/json-api/createacct?api.version=2&maxaddon=10&username=$user_name&domain=$domain&password=$password&contactemail=$email&plan=$plan&quota=2048";
+        $whm_credentials = Helper::get_whm_api_credentials();
+        $api_url = $whm_credentials['url'] . "/json-api/createacct?api.version=2&maxaddon=10&username=$user_name&domain=$domain&password=$password&contactemail=$email&plan=$plan&quota=2048";
 
         $response = wp_remote_post($api_url, array(
             'headers' => array(
-                'Authorization' => 'Basic ' . base64_encode('root:rootpasswordhidden'),
+                'Authorization' => 'Basic ' . base64_encode($whm_credentials['username'] . ':' . $whm_credentials['password']),
             ),
             'method'      => 'POST',
             'timeout'     => 45,
@@ -163,6 +164,9 @@ class Frontend
             $order->update_meta_data('whm_domain', $domain);
             $order->update_meta_data('whm_status', $reason);
             $order->save();
+
+            // Trigger webhook
+            do_action('woocommerce_webhook_process_cpanel_account_created', array('order_id' => $order->get_id()));
         }
     }
 
@@ -174,12 +178,13 @@ class Frontend
      */
     private function suspend_unsuspend_account($order, $action)
     {
-        $whm_user = 'root';
-        $whm_pass = 'rootpasswordhidden';
+        $whm_credentials = Helper::get_whm_api_credentials();
+        $whm_user = $whm_credentials['username'];
+        $whm_pass = $whm_credentials['password'];
         $user_name = $order->get_meta('whm_user_name');
         $user_name = strtolower($user_name);
 
-        $api_url = "https://cube.macbay.net:2087/json-api/$action?api.version=1&user=$user_name";
+        $api_url = $whm_credentials['url'] . "/json-api/$action?api.version=1&user=$user_name";
 
         $response = wp_remote_post($api_url, array(
             'headers' => array(
@@ -192,12 +197,10 @@ class Frontend
             'blocking'    => true,
         ));
 
-        if (is_wp_error($response)) {
-            // Handle error
-        } else {
-            $body = wp_remote_retrieve_body($response);
-            $data = json_decode($body);
-            // Handle response
-        }
-    }
+if (is_wp_error($response)) {
+    // Handle error
+} else {
+    $body = wp_remote_retrieve_body($response);
+    $data = json_decode($body);
+    // Handle response
 }

@@ -19,6 +19,7 @@ class Plugin
     {
         $this->includes();
         $this->init_hooks();
+        $this->register_settings();
         Admin_Notices::display_notices();
     }
 
@@ -30,6 +31,7 @@ class Plugin
         require_once WOOCOMMERCE_CPANEL_ACCOUNT_PLUGIN_DIR . 'includes/classes/Admin.php';
         require_once WOOCOMMERCE_CPANEL_ACCOUNT_PLUGIN_DIR . 'includes/classes/Frontend.php';
         require_once WOOCOMMERCE_CPANEL_ACCOUNT_PLUGIN_DIR . 'includes/classes/Admin_Notices.php';
+        require_once WOOCOMMERCE_CPANEL_ACCOUNT_PLUGIN_DIR . 'includes/classes/Admin_Settings.php';
     }
 
     /**
@@ -47,6 +49,15 @@ class Plugin
 
         add_action('woocommerce_thankyou', array($frontend, 'create_cpanel_account'));
         add_action('woocommerce_order_status_changed', array($frontend, 'handle_order_status_change'), 10, 4);
+    }
+
+    /**
+     * Register settings
+     */
+    private function register_settings()
+    {
+        $admin_settings = new Admin_Settings();
+        $admin_settings->register_settings();
     }
 
     /**
